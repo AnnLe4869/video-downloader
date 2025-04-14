@@ -6,8 +6,7 @@ import time
 
 # -------- Configuration --------
 CHROMEDRIVER_PATH = './chromedriver.exe'  # Update this!
-TARGET_URL = 'https://www.miruro.tv/watch?id=153518&ep=1'  # Replace with the actual site
-WAIT_TIME = 10  # Seconds to wait for page activity
+WAIT_TIME = 5  # Seconds to wait for page activity
 # --------------------------------
 
 def extract_m3u8_requests(driver):
@@ -17,7 +16,7 @@ def extract_m3u8_requests(driver):
             m3u8_urls.add(request.url)
     return list(m3u8_urls)
 
-def main():
+def fetching_m3u8_requests(url: str):
     options = Options()
     options.add_argument("--headless")  # Run in background
     options.add_argument("--disable-gpu")
@@ -25,8 +24,8 @@ def main():
     service = Service(CHROMEDRIVER_PATH)
     driver = webdriver.Chrome(service=service, options=options)
 
-    print(f"Loading: {TARGET_URL}")
-    driver.get(TARGET_URL)
+    print(f"Loading: {url}")
+    driver.get(url)
     
     print(f"Waiting {WAIT_TIME} seconds for network requests...")
     time.sleep(WAIT_TIME)
@@ -38,6 +37,4 @@ def main():
         print(url)
 
     driver.quit()
-
-if __name__ == "__main__":
-    main()
+    return m3u8_files
